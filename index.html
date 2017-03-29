@@ -44,19 +44,45 @@ function Scene(ctx) {
 			ctx.moveTo(0, i);
 			ctx.lineTo(field.width, i);
 			ctx.stroke();
+			ctx.closePath();
 		}
+		ctx.beginPath();
+		ctx.moveTo(field.rowHeight, 0);
+		ctx.lineTo(field.rowHeight, field.height);
+		ctx.stroke();
+		ctx.closePath();
 	}
 
 	this.drawCritters = function(critters) {
 		for (var i = 0; i < critters.length; i++) {
 			var c = critters[i];
+			ctx.save();
 			ctx.beginPath();
-			ctx.arc(c.x, c.y, c.r, 0, 2*Math.PI);
 			ctx.fillStyle = c.color;
+			ctx.arc(c.x, c.y, c.r, 0, 2*Math.PI);
 			ctx.fill();
+			ctx.closePath();
+			ctx.restore();
 		}
 	}
-	
+
+	this.drawTurrets = function(turrets) {
+		for (var i = 0; i < turrets.length; i++) {
+			var t = turrets[i];
+			if (!t) {
+				continue;
+			}
+			var x = t.field.rowHeight + 5;
+			var y = t.row * t.field.rowHeight + 5;
+			ctx.save();
+			ctx.beginPath();
+			ctx.fillStyle = t.color;
+			ctx.rect(x, y, 40, 40);
+			ctx.fill();
+			ctx.closePath();
+			ctx.restore();
+		}
+	}	
 }
 
 function Game(field, scene) {
@@ -68,6 +94,7 @@ function Game(field, scene) {
 	this.previousTime = 0;
 	this.elapsed = 0;
 	this.critterID = 0;
+	this.turrets = new Array(this.field.height / this.field.rowHeight);
 
 	this.setup = function() {
 		this.spawnCritter();
@@ -76,12 +103,25 @@ function Game(field, scene) {
 	this.draw = function() {
 		scene.drawField(this.field);
 		scene.drawCritters(this.critters);
+		scene.drawTurrets(this.turrets);
 	}
 
 	this.spawnCritter = function() {
-		var critter = new Critter(random(0, 7), 20, this.field, this.critterID);
+		var critter = new Critter(random(0, 7), random(15, 23), this.field, this.critterID);
 		this.critters.push(critter);
 		this.critterID++;
+	}
+
+	this.spawnTurret = function(y) {
+		var row = Math.floor(y / this.field.rowHeight);
+		console.log(row);
+		console.log(this.turrets[row]);
+		if (this.turrets[row]) {
+			return;
+		}
+		var turret = new Turret(row, this.field);
+		this.turrets[row] = turret;
+		console.log(this.turrets);
 	}
 
 	this.run = function(t) {
@@ -90,7 +130,6 @@ function Game(field, scene) {
 		this.elapsed += this.currentTime - this.previousTime;
 		var n = random(2, 4);
 		if (this.elapsed >= n * 1000) {
-			console.log(n, " seconds");
 			this.elapsed = 0;
 			this.spawnCritter();
 		}
@@ -144,24 +183,30 @@ function Game(field, scene) {
 		}
 	}
 }
+ 
+function Turret(row, field) {
+	this.row = row;
+	this.field = field;
+	this.color = "black";
+}
 
 function Critter(row, r, field, id) {
 	this.row = row;
 	this.x = field.width - r - 5;
+	this.field = field;
 	this.y = row * field.rowHeight + (field.rowHeight / 2);
 	this.r = r;
 	this.color = "red";
-	this.speed = random(2, 4);
+	this.speed = random(1, 2);
 	this.life = 2;
 	this.id = id;
-	console.log(this.id);
 
 	this.update = function() {
 		this.x = this.x - this.speed;
 	}
 
 	this.checkEnd = function() {
-		return (this.x - r <= 0);
+		return (this.x <= 0 + (this.field.rowHeight - this.r));
 	}
 
 	this.hit = function(xc, yc) {
@@ -192,7 +237,8 @@ document.addEventListener("DOMContentLoaded", function() {
         var elemTop = canvas.offsetTop;
         var x = event.pageX - elemLeft;
         var y = event.pageY - elemTop;
-        game.click(x, y);
+        //game.click(x, y);
+        game.spawnTurret(y);
     });
 
 	game.setup();
