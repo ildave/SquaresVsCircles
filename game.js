@@ -20,7 +20,7 @@ function Game(field, scene) {
 	}
 
 	this.draw = function() {
-		scene.drawField(this.field);
+		scene.drawField(this.field, this.deadCritters);
 		scene.drawCritters(this.critters);
 		scene.drawTurrets(this.turrets);
 		scene.drawBullets(this.bullets);
@@ -49,7 +49,7 @@ function Game(field, scene) {
 		this.turrets.push(turret);
 	}
 
-	this.run = function(t, counter) {
+	this.run = function(t) {
         if (this.started == 0 || this.ended == 1) {
             return;
         }
@@ -108,10 +108,9 @@ function Game(field, scene) {
 		else {
 			var that = this;
 			this.running = requestAnimationFrame(function(t) {
-				that.run(t, counter);
+				that.run(t);
 			});
 		}
-		this.updateCounter(counter);
 	}
 
 	this.click = function(x, y) {
@@ -170,9 +169,5 @@ function Game(field, scene) {
 		if (index > -1) {
 			this.turrets.splice(index, 1);
 		}
-	}
-
-	this.updateCounter = function(counter) {
-		counter.value = this.deadCritters;
 	}
 }

@@ -14,7 +14,7 @@
 
 <canvas id="field" width="800" height="425"></canvas>
 <br />
-<button id="start">Start</button> <button id="pause">Pause</button> Dead critters: <input type="text" id="counter" size="5" value="0"/>
+<button id="start">Start</button> <button id="pause">Pause</button>
 
 <script src="field.js"></script>
 <script src="scene.js"></script>
@@ -49,15 +49,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	game.setup();
 	game.draw();
 	
-	var counter = document.getElementById("counter");
-
 	document.getElementById("start").addEventListener("click", function() {
 		if (game.ended == 1) {
 			return;
 		}
 		game.started = 1;
 		game.running = requestAnimationFrame(function(t) {
-			game.run(t, counter);
+			game.run(t);
 		});
 	});
 
@@ -72,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 		else {
 			game.running = requestAnimationFrame(function(t) {
-				game.run(t, counter);
+				game.run(t);
 			});
 			document.getElementById("pause").innerHTML = "Pause";
 		}
