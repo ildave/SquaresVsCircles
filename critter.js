@@ -5,8 +5,8 @@ function Critter(row, r, field, id) {
 	this.y = row * field.rowHeight + (field.rowHeight / 2);
 	this.r = r;
 	this.color = "red";
-	this.speed = random(1, 2);
-	this.life = 2;
+	this.speed = random(3, 7) / 10; //random(1, 2);
+	this.life = 5;
 	this.id = id;
 
 	this.update = function() {
@@ -41,6 +41,7 @@ function Critter(row, r, field, id) {
 				continue;
 			}
 			if ((t.col * 50 + 45) >= this.x - this.r) {
+				console.log("touched a turret");
 				deadTurrets.push(t);
 			}
 		}

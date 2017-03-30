@@ -46,7 +46,6 @@ function Game(field, scene) {
 		var turret = new Turret(row, col, this.field, this.currentTime);
 		this.turretID++;
 		turret.id = this.turretID;
-		console.log(turret.id);
 		this.turrets.push(turret);
 	}
 
