@@ -13,6 +13,9 @@
 <body>
 
 <canvas id="field" width="800" height="400"></canvas>
+<br />
+<button id="start">Start</button>
+
 <script src="field.js"></script>
 <script src="scene.js"></script>
 <script src="game.js"></script>
@@ -43,9 +46,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	game.setup();
 	game.draw();
-	game.running = requestAnimationFrame(function(t) {
-		game.run(t);
-	});
+	
+
+	document.getElementById("start").addEventListener("click", function() {
+		game.running = requestAnimationFrame(function(t) {
+			game.run(t);
+		});
+	})
 
 });
 

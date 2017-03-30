@@ -12,7 +12,7 @@ function Game(field, scene) {
 	this.bullets = new Array();
 
 	this.setup = function() {
-		this.spawnCritter();
+		
 	}
 
 	this.draw = function() {
@@ -29,6 +29,9 @@ function Game(field, scene) {
 	}
 
 	this.spawnTurret = function(y) {
+        if (this.running == 0) {
+            return;
+        }
 		var row = Math.floor(y / this.field.rowHeight);
 		if (this.turrets[row]) {
 			return;
