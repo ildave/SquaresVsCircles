@@ -6,6 +6,7 @@ function Turret(row, col, field, currentTime) {
 	this.previousTime = currentTime;
 	this.currentTime = currentTime;
 	this.elapsed = 0;
+    this.id = 0;
 
 	this.shoot = function(t, critters) {
         var shoot = false;
@@ -19,7 +20,7 @@ function Turret(row, col, field, currentTime) {
             this.previousTime = this.currentTime;
             this.currentTime = t;
             this.elapsed += this.currentTime - this.previousTime;
-            if (this.elapsed >= 1000) {
+            if (this.elapsed >= 1500) {
                 this.elapsed = 0;
                 return this.spawnBullet();
             }

@@ -33,6 +33,21 @@ function Critter(row, r, field, id) {
 		return hitters;
 	}
 
+	this.attackTurret = function(turrets) {
+		var deadTurrets = new Array();
+		for (var i = 0; i < turrets.length; i++) {
+			var t = turrets[i];
+			if (t.row != this.row) {
+				continue;
+			}
+			console.log(t.row * 50 + 45, this.x - this.r);
+			if ((t.col * 50 + 45) >= this.x - this.r) {
+				deadTurrets.push(t);
+			}
+		}
+		return deadTurrets;
+	}
+
 	this.isDead = function() {
 		return this.life <= 0;
 	}
