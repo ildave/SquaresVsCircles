@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var elemTop = canvas.offsetTop;
         var x = event.pageX - elemLeft;
         var y = event.pageY - elemTop;
-		if (x <= 50) {
+		if (x <= 50 || y > 400) {
 			return;
 		}
         game.spawnTurret(x, y);
