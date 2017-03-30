@@ -4,6 +4,7 @@ function Game(field, scene) {
 	this.critters = new Array();
 	this.running = 0;
     this.started = 0;
+    this.ended = 0;
 	this.currentTime = 0;
 	this.previousTime = 0;
 	this.elapsed = 0;
@@ -42,6 +43,9 @@ function Game(field, scene) {
 	}
 
 	this.run = function(t) {
+        if (this.started == 0 || this.ended == 1) {
+            return;
+        }
 		this.previousTime = this.currentTime;
 		this.currentTime = t;
 		this.elapsed += this.currentTime - this.previousTime;
@@ -86,7 +90,7 @@ function Game(field, scene) {
 			}
 		}
 		if (end) {
-            this.started = 0;
+            this.ended = 1;
 			cancelAnimationFrame(this.running);
 		}
 		else {

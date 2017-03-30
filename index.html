@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 
 	document.getElementById("start").addEventListener("click", function() {
+		if (game.ended == 1) {
+			return;
+		}
 		game.started = 1;
 		game.running = requestAnimationFrame(function(t) {
 			game.run(t);
@@ -55,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	document.getElementById("pause").addEventListener("click", function() {
-		if (game.started == 0) {
+		if (game.started == 0 || game.ended == 1) {
 			return;
 		}
 		if (game.running > 0) {
