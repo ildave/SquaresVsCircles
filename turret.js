@@ -1,5 +1,6 @@
-function Turret(row, field, currentTime) {
+function Turret(row, col, field, currentTime) {
 	this.row = row;
+    this.col = col;
 	this.field = field;
 	this.color = "black";
 	this.previousTime = currentTime;
@@ -26,7 +27,7 @@ function Turret(row, field, currentTime) {
 	}
 
 	this.spawnBullet = function() {
-		var bullet = new Bullet(this.row);
+		var bullet = new Bullet(this.row, this);
 		return bullet;
 	}
 }

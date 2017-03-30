@@ -49,7 +49,8 @@ function Scene(ctx) {
 			if (!t) {
 				continue;
 			}
-			var x = t.field.rowHeight + 5;
+			//var x = t.field.rowHeight + 5;
+			var x = t.col * t.field.rowHeight + 5
 			var y = t.row * t.field.rowHeight + 5;
 			ctx.save();
 			ctx.beginPath();

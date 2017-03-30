@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var x = event.pageX - elemLeft;
         var y = event.pageY - elemTop;
         //game.click(x, y);
-        game.spawnTurret(y);
+        game.spawnTurret(x, y);
     });
 
 	game.setup();

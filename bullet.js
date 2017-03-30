@@ -1,11 +1,12 @@
-function Bullet(row, id) {
+function Bullet(row, turret) {
 	this.row = row;
 	this.r = 5;
-	this.x = 50 + 5 + 40; //TODO: remove magic numbers;
+	this.x = turret.col * 50 + 5 + 40; //TODO: remove magic numbers;
 	this.y = row * 50 + 25; //TODO: remove magic numbers;
-	this.color = "red";
+	this.color = "blue";
 	this.speed = 2;
-	this.id = id;
+	this.id = -1;
+	this.turret = turret;
 
 	this.update = function() {
 		this.x = this.x + this.speed;

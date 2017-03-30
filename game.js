@@ -10,7 +10,7 @@ function Game(field, scene) {
 	this.elapsed = 0;
 	this.critterID = 0;
 	this.bulletID = 0;
-	this.turrets = new Array(this.field.height / this.field.rowHeight);
+	this.turrets = new Array();
 	this.bullets = new Array();
 
 	this.setup = function() {
@@ -30,16 +30,19 @@ function Game(field, scene) {
 		this.critterID++;
 	}
 
-	this.spawnTurret = function(y) {
+	this.spawnTurret = function(x, y) {
         if (this.running == 0) {
             return;
         }
 		var row = Math.floor(y / this.field.rowHeight);
-		if (this.turrets[row]) {
-			return;
+		var col = Math.floor(x / this.field.rowHeight);
+		for (var i = 0; i < this.turrets.length; i++) {
+			if (this.turrets[i].row == row && this.turrets[i].col == col) {
+				return;
+			}
 		}
-		var turret = new Turret(row, this.field, this.currentTime);
-		this.turrets[row] = turret;
+		var turret = new Turret(row, col, this.field, this.currentTime);
+		this.turrets.push(turret);
 	}
 
 	this.run = function(t) {
