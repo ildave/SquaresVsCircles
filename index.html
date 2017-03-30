@@ -14,8 +14,7 @@
 
 <canvas id="field" width="800" height="400"></canvas>
 <br />
-<button id="start">Start</button>
-
+<button id="start">Start</button> <button id="pause">Pause</button>
 <script src="field.js"></script>
 <script src="scene.js"></script>
 <script src="game.js"></script>
@@ -49,9 +48,27 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 
 	document.getElementById("start").addEventListener("click", function() {
+		game.started = 1;
 		game.running = requestAnimationFrame(function(t) {
 			game.run(t);
 		});
+	});
+
+	document.getElementById("pause").addEventListener("click", function() {
+		if (game.started == 0) {
+			return;
+		}
+		if (game.running > 0) {
+			cancelAnimationFrame(game.running);
+			game.running = 0;
+			document.getElementById("pause").innerHTML = "Unpause";
+		}
+		else {
+			game.running = requestAnimationFrame(function(t) {
+				game.run(t);
+			});
+			document.getElementById("pause").innerHTML = "Pause";
+		}
 	})
 
 });

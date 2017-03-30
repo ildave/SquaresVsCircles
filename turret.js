@@ -14,7 +14,7 @@ function Turret(row, field, currentTime) {
                 break;
             }
         }
-            if (shoot) {
+        if (shoot) {
             this.previousTime = this.currentTime;
             this.currentTime = t;
             this.elapsed += this.currentTime - this.previousTime;
