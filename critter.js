@@ -40,7 +40,6 @@ function Critter(row, r, field, id) {
 			if (t.row != this.row) {
 				continue;
 			}
-			console.log(t.row * 50 + 45, this.x - this.r);
 			if ((t.col * 50 + 45) >= this.x - this.r) {
 				deadTurrets.push(t);
 			}

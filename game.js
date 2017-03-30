@@ -13,6 +13,7 @@ function Game(field, scene) {
 	this.turretID = 0;
 	this.turrets = new Array();
 	this.bullets = new Array();
+	this.deadCritters = 0;
 
 	this.setup = function() {
 		
@@ -49,7 +50,7 @@ function Game(field, scene) {
 		this.turrets.push(turret);
 	}
 
-	this.run = function(t) {
+	this.run = function(t, counter) {
         if (this.started == 0 || this.ended == 1) {
             return;
         }
@@ -78,6 +79,7 @@ function Game(field, scene) {
 				this.removeTurret(deadTurrets[i]);
 			}
 			if (this.critters[i].isDead()) {
+				this.deadCritters++;
 				this.removeCritter(this.critters[i]);
 			}
 		}
@@ -107,9 +109,10 @@ function Game(field, scene) {
 		else {
 			var that = this;
 			this.running = requestAnimationFrame(function(t) {
-				that.run(t);
+				that.run(t, counter);
 			});
 		}
+		this.updateCounter(counter);
 	}
 
 	this.click = function(x, y) {
@@ -168,5 +171,9 @@ function Game(field, scene) {
 		if (index > -1) {
 			this.turrets.splice(index, 1);
 		}
+	}
+
+	this.updateCounter = function(counter) {
+		counter.value = this.deadCritters;
 	}
 }
