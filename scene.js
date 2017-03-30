@@ -3,7 +3,7 @@ function Scene(ctx) {
 
 	this.drawField = function(field) {
 		ctx.clearRect(0, 0, field.width, field.height);
-		for (var i = 0; i < field.height; i = i + field.rowHeight) {
+		for (var i = 0; i <= field.height; i = i + field.rowHeight) {
 			ctx.beginPath();
 			ctx.moveTo(0, i);
 			ctx.lineTo(field.width, i);

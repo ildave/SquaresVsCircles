@@ -5,7 +5,7 @@ function Critter(row, r, field, id) {
 	this.y = row * field.rowHeight + (field.rowHeight / 2);
 	this.r = r;
 	this.color = "red";
-	this.speed = random(3, 7) / 10; //random(1, 2);
+	this.speed = random(3, 7) / 10;
 	this.life = 5;
 	this.id = id;
 
