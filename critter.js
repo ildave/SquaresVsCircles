@@ -32,7 +32,7 @@ function Critter(row, field, id, t) {
 			if (t.row != this.row) {
 				continue;
 			}
-			if ((t.col * 50 + 45) >= this.x - this.r) {
+			if ((t.col * 50 + 45) >= this.x - this.r && (t.col * 50) < this.x + this.r) {
 				touching = true;
 				target = t;
 				break;
@@ -66,7 +66,7 @@ function Critter(row, field, id, t) {
 			if (this.row != b.row) {
 				continue;
 			}
-			if (b.x + b.r >= this.x - this.r) {
+			if (b.x + b.r >= this.x - this.r && (b.x - b.r) < this.x + this.r) {
 				this.life--;
 				this.color = "green";
 				hitters.push(b);
