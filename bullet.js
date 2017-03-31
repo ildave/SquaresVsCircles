@@ -1,6 +1,6 @@
 function Bullet(row, turret) {
 	this.row = row;
-	this.r = 5;
+	this.r = 3;
 	this.x = turret.col * 50 + 5 + 40; //TODO: remove magic numbers;
 	this.y = row * 50 + 25; //TODO: remove magic numbers;
 	this.color = "blue";

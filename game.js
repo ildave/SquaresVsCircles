@@ -27,7 +27,7 @@ function Game(field, scene) {
 	}
 
 	this.spawnCritter = function(t) {
-		var critter = new Critter(random(0, 7), random(15, 23), this.field, this.critterID, t);
+		var critter = new Critter(random(0, 7), this.field, this.critterID, t);
 		this.critters.push(critter);
 		this.critterID++;
 	}
