@@ -23,7 +23,6 @@ function Critter(row, field, id, t) {
 		var target;
 		
 		if (turrets.length == 0) {
-			console.log("don't touch", this.id, t.id);
 			this.attacking = false;
 			this.speed = this.previousSpeed;
 		}
