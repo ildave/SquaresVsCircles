@@ -110,6 +110,7 @@ function Game(field, scene) {
 		}
 		if (end) {
             this.ended = 1;
+			this.scene.drawEnd();
 			cancelAnimationFrame(this.running);
 		}
 		else {

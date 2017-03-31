@@ -1,6 +1,11 @@
 function Scene(ctx) {
 	this.ctx = ctx;
 
+	this.drawEnd = function() {
+		ctx.font = "25px Arial";
+		ctx.fillText("You lose!", 400, 422);
+	}
+
 	this.drawField = function(field, deadCritters, deadTurrets) {
 		ctx.clearRect(0, 0, field.width, field.height + 25);
 		for (var i = 0; i <= field.height; i = i + field.rowHeight) {
