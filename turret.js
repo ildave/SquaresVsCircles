@@ -7,6 +7,7 @@ function Turret(row, col, field, currentTime) {
 	this.currentTime = currentTime;
 	this.elapsed = 0;
     this.id = 0;
+    this.life = 5000;
 
 	this.shoot = function(t, critters) {
         var shoot = false;
@@ -31,4 +32,8 @@ function Turret(row, col, field, currentTime) {
 		var bullet = new Bullet(this.row, this);
 		return bullet;
 	}
+
+    this.isDead = function() {
+        return this.life <= 0;
+    }
 }

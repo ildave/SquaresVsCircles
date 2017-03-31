@@ -16,7 +16,7 @@ function Game(field, scene) {
 	this.deadCritters = 0;
 
 	this.setup = function() {
-		
+		//this.spawnCritter();
 	}
 
 	this.draw = function() {
@@ -26,8 +26,8 @@ function Game(field, scene) {
 		scene.drawBullets(this.bullets);
 	}
 
-	this.spawnCritter = function() {
-		var critter = new Critter(random(0, 7), random(15, 23), this.field, this.critterID);
+	this.spawnCritter = function(t) {
+		var critter = new Critter(random(0, 7), random(15, 23), this.field, this.critterID, t);
 		this.critters.push(critter);
 		this.critterID++;
 	}
@@ -57,10 +57,14 @@ function Game(field, scene) {
 		this.currentTime = t;
 		this.elapsed += this.currentTime - this.previousTime;
 		var n = random(1, 3);
+		
 		if (this.elapsed >= n * 1000) {
 			this.elapsed = 0;
-			this.spawnCritter();
+			//if (this.critters.length <1)
+			this.spawnCritter(t);
 		}
+		
+		
 		for (var i = 0; i < this.bullets.length; i++) {
 			this.bullets[i].update();
 			if (this.bullets[i].x + this.bullets[i].r > this.field.width) {
@@ -68,19 +72,21 @@ function Game(field, scene) {
 			}
 		}
 		for (var i = 0; i < this.critters.length; i++) {
-			this.critters[i].update();
+			this.critters[i].update(t, this.turrets);
 			var hitters = this.critters[i].hit(this.bullets);
-			var deadTurrets = this.critters[i].attackTurret(this.turrets);
 			for (var j = 0; j < hitters.length; j++) {
 				this.removeBullet(hitters[j]);
 			}
-			for (var j = 0; j < deadTurrets.length; j++) {
-				this.removeTurret(deadTurrets[i]);
+			for (var j = 0; j < this.turrets.length; j++) {
+				if (this.turrets[j].isDead()) {
+					this.removeTurret(this.turrets[j]);
+				}
 			}
 			if (this.critters[i].isDead()) {
 				this.deadCritters++;
 				this.removeCritter(this.critters[i]);
 			}
+
 		}
 		for (var i = 0; i < this.turrets.length; i++) {
 			if (!this.turrets[i]) {
