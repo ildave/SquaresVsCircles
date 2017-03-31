@@ -1,7 +1,7 @@
 function Scene(ctx) {
 	this.ctx = ctx;
 
-	this.drawField = function(field, deadCritters) {
+	this.drawField = function(field, deadCritters, deadTurrets) {
 		ctx.clearRect(0, 0, field.width, field.height + 25);
 		for (var i = 0; i <= field.height; i = i + field.rowHeight) {
 			ctx.beginPath();
@@ -17,7 +17,7 @@ function Scene(ctx) {
 		ctx.closePath();
 
 		ctx.font = "20px Arial";
-		ctx.fillText("Dead critters: " + deadCritters, 10, 420);
+		ctx.fillText("Dead critters: " + deadCritters + " - Dead turrets: " + deadTurrets, 10, 420);
 	}
 
 	this.drawCritters = function(critters) {

@@ -14,13 +14,14 @@ function Game(field, scene) {
 	this.turrets = new Array();
 	this.bullets = new Array();
 	this.deadCritters = 0;
+	this.deadTurrets = 0;
 
 	this.setup = function() {
 		//this.spawnCritter();
 	}
 
 	this.draw = function() {
-		scene.drawField(this.field, this.deadCritters);
+		scene.drawField(this.field, this.deadCritters, this.deadTurrets);
 		scene.drawCritters(this.critters);
 		scene.drawTurrets(this.turrets);
 		scene.drawBullets(this.bullets);
@@ -77,11 +78,6 @@ function Game(field, scene) {
 			for (var j = 0; j < hitters.length; j++) {
 				this.removeBullet(hitters[j]);
 			}
-			for (var j = 0; j < this.turrets.length; j++) {
-				if (this.turrets[j].isDead()) {
-					this.removeTurret(this.turrets[j]);
-				}
-			}
 			if (this.critters[i].isDead()) {
 				this.deadCritters++;
 				this.removeCritter(this.critters[i]);
@@ -90,6 +86,11 @@ function Game(field, scene) {
 		}
 		for (var i = 0; i < this.turrets.length; i++) {
 			if (!this.turrets[i]) {
+				continue;
+			}
+			if (this.turrets[i].isDead()) {
+				this.deadTurrets++;
+				this.removeTurret(this.turrets[i]);
 				continue;
 			}
 			var b = this.turrets[i].shoot(t, this.critters);
@@ -164,7 +165,6 @@ function Game(field, scene) {
 		if (!turret) {
 			return; //but why??
 		}
-		console.log(turret);
 		var index = -1;
 		for (var i = 0; i < this.turrets.length; i++) {
 			if (this.turrets[i].id == turret.id) {
