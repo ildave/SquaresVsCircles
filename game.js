@@ -1,4 +1,5 @@
-function Game(field, scene) {
+function Game(field, scene, DOMObjects) {
+	this.DOMObjects = DOMObjects;
 	this.field = field;
 	this.scene = scene
 	this.critters = new Array();
@@ -112,6 +113,7 @@ function Game(field, scene) {
             this.ended = 1;
 			this.scene.drawEnd();
 			cancelAnimationFrame(this.running);
+			this.DOMObjects.startButton.disabled = false; //ugly ugly ugly
 		}
 		else {
 			var that = this;

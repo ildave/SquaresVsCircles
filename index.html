@@ -29,11 +29,14 @@ function random(min, max) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+	var DOMObjects = {
+		startButton: document.getElementById("start")
+	}
 	var canvas = document.getElementById("field");
 	var ctx = canvas.getContext('2d');
 	var field = new Field(800, 400, 50);
 	var scene = new Scene(ctx);
-	var game = new Game(field, scene);
+	var game = new Game(field, scene, DOMObjects);
 
 	canvas.addEventListener("click", function(event) {
         var elemLeft = canvas.offsetLeft;
@@ -51,12 +54,28 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 	document.getElementById("start").addEventListener("click", function() {
 		if (game.ended == 1) {
+			field = new Field(800, 400, 50);
+			scene = new Scene(ctx);
+			game = new Game(field, scene, DOMObjects);
+			game.setup();
+			game.draw();
+			game.started = 1;
+			game.running = requestAnimationFrame(function(t) {
+				game.run(t);
+			});
+			this.disabled = true;
+		}
+		else if (game.running > 0) {
 			return;
 		}
-		game.started = 1;
-		game.running = requestAnimationFrame(function(t) {
-			game.run(t);
-		});
+		else {
+			game.started = 1;
+			game.running = requestAnimationFrame(function(t) {
+				game.run(t);
+			});
+			this.disabled = true;
+			this.innerHTML = "Restart";
+		}
 	});
 
 	document.getElementById("pause").addEventListener("click", function() {
