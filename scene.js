@@ -6,7 +6,11 @@ function Scene(ctx) {
 		ctx.fillText("You lose!", 400, 422);
 	}
 
-	this.drawField = function(field, deadCritters, deadTurrets) {
+	this.drawField = function(field, deadCritters, deadTurrets, waveNumber, waveOnScreen) {
+		console.log(deadCritters);
+		console.log(deadTurrets);
+		console.log(waveNumber);
+		console.log(waveOnScreen);
 		ctx.clearRect(0, 0, field.width, field.height + 25);
 		for (var i = 0; i <= field.height; i = i + field.rowHeight) {
 			ctx.beginPath();
@@ -22,7 +26,8 @@ function Scene(ctx) {
 		ctx.closePath();
 
 		ctx.font = "20px Arial";
-		ctx.fillText("Dead critters: " + deadCritters + " - Dead turrets: " + deadTurrets, 10, 420);
+		var tokens = ["Dead critter: ", deadCritters, " - Dead turrets: ", deadTurrets, " - Wave: ", waveNumber, " - Critters: ", waveOnScreen];
+		ctx.fillText(tokens.join(""), 10, 420);
 	}
 
 	this.drawCritters = function(critters) {

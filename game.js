@@ -16,13 +16,25 @@ function Game(field, scene, DOMObjects) {
 	this.bullets = new Array();
 	this.deadCritters = 0;
 	this.deadTurrets = 0;
+	this.waveNumber = 1;
+	this.waveCount = Math.round(4*Math.log(this.waveNumber) + 2 * this.waveNumber);
+	this.waveSpawned = 0;
+	this.waveAlive = this.waveCount;
+	this.waveOnScreen = 0;
+	this.elapsedBetweenWaves = 0;
 
 	this.setup = function() {
-		//this.spawnCritter();
+		console.log("Setup");
+		console.log("current wave: ", this.waveNumber);
+		console.log("wave count: ", this.waveCount);
+		console.log("wave spawned: ", this.waveSpawned);
+		console.log("wave alive: ", this.waveAlive);
+		console.log("wave onscreen", this.waveOnScreen);
+		console.log("Fine setup");
 	}
 
 	this.draw = function() {
-		scene.drawField(this.field, this.deadCritters, this.deadTurrets);
+		scene.drawField(this.field, this.deadCritters, this.deadTurrets, this.waveNumber, this.waveOnScreen);
 		scene.drawCritters(this.critters);
 		scene.drawTurrets(this.turrets);
 		scene.drawBullets(this.bullets);
@@ -58,12 +70,25 @@ function Game(field, scene, DOMObjects) {
 		this.previousTime = this.currentTime;
 		this.currentTime = t;
 		this.elapsed += this.currentTime - this.previousTime;
-		var n = random(1, 3);
-		
-		if (this.elapsed >= n * 1000) {
-			this.elapsed = 0;
-			//if (this.critters.length <1)
-			this.spawnCritter(t);
+		if (this.waveSpawned <  this.waveCount) { //middle of a wave, spawn until max
+			var n = random(1, 3);
+			if (this.elapsed >= n * 1000) {
+				this.elapsed = 0;
+				this.spawnCritter(t);
+				this.waveSpawned = this.waveSpawned + 1;
+				this.waveOnScreen++;
+			}
+		}
+		if (this.waveSpawned == this.waveCount && this.waveAlive == 0) {//end of wave, start next 
+			this.elapsedBetweenWaves += this.currentTime - this.previousTime;
+			if (this.elapsedBetweenWaves >= 5000) { //but wait 5 seconds
+				this.waveNumber = this.waveNumber + 1;
+				this.waveCount = Math.round(4*Math.log(this.waveNumber) + 2 * this.waveNumber);
+				this.waveSpawned = 0;
+				this.waveAlive = this.waveCount;
+				this.waveOnScreen = 0;
+				this.elapsedBetweenWaves = 0;
+			}
 		}
 		
 		
@@ -81,6 +106,8 @@ function Game(field, scene, DOMObjects) {
 			}
 			if (this.critters[i].isDead()) {
 				this.deadCritters++;
+				this.waveAlive = this.waveAlive - 1;
+				this.waveOnScreen--;
 				this.removeCritter(this.critters[i]);
 			}
 
