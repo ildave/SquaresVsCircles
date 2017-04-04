@@ -6,6 +6,7 @@ function Critter(row, field, id, t) {
 	this.speed = random(3, 7) / 10;
 	this.previousSpeed = this.speed;
 	this.life = random(3, 12);
+	this.startingLife = this.life;
 	this.r = this.life * 2;
 	this.x = field.width - this.r - 5;
 	this.id = id;

@@ -22,6 +22,7 @@ function Game(field, scene, DOMObjects) {
 	this.waveAlive = this.waveCount;
 	this.waveOnScreen = 0;
 	this.elapsedBetweenWaves = 0;
+	this.coins = 21;
 
 	this.setup = function() {
 		console.log("Setup");
@@ -34,7 +35,7 @@ function Game(field, scene, DOMObjects) {
 	}
 
 	this.draw = function() {
-		scene.drawField(this.field, this.deadCritters, this.deadTurrets, this.waveNumber, this.waveOnScreen);
+		scene.drawField(this.field, this.deadCritters, this.deadTurrets, this.waveNumber, this.waveOnScreen, this.coins);
 		scene.drawCritters(this.critters);
 		scene.drawTurrets(this.turrets);
 		scene.drawBullets(this.bullets);
@@ -50,6 +51,9 @@ function Game(field, scene, DOMObjects) {
         if (this.running == 0) {
             return;
         }
+		if (this.coins <= 0) {
+			return;
+		}
 		var row = Math.floor(y / this.field.rowHeight);
 		var col = Math.floor(x / this.field.rowHeight);
 		for (var i = 0; i < this.turrets.length; i++) {
@@ -61,6 +65,7 @@ function Game(field, scene, DOMObjects) {
 		this.turretID++;
 		turret.id = this.turretID;
 		this.turrets.push(turret);
+		this.coins = this.coins - turret.cost;
 	}
 
 	this.run = function(t) {
@@ -108,6 +113,7 @@ function Game(field, scene, DOMObjects) {
 				this.deadCritters++;
 				this.waveAlive = this.waveAlive - 1;
 				this.waveOnScreen--;
+				this.coins = this.coins + this.critters[i].startingLife;
 				this.removeCritter(this.critters[i]);
 			}
 
