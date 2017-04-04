@@ -17,12 +17,13 @@ function Game(field, scene, DOMObjects) {
 	this.deadCritters = 0;
 	this.deadTurrets = 0;
 	this.waveNumber = 1;
-	this.waveCount = Math.round(4*Math.log(this.waveNumber) + 2 * this.waveNumber);
+	this.waveCount = Math.round(4*Math.log(this.waveNumber) + 2 * this.waveNumber) + (this.waveNumber - 1);
 	this.waveSpawned = 0;
 	this.waveAlive = this.waveCount;
 	this.waveOnScreen = 0;
+	this.initialWave = 0;
 	this.elapsedBetweenWaves = 0;
-	this.coins = 21;
+	this.coins = 25;
 
 	this.setup = function() {
 		console.log("Setup");
@@ -51,9 +52,6 @@ function Game(field, scene, DOMObjects) {
         if (this.running == 0) {
             return;
         }
-		if (this.coins <= 0) {
-			return;
-		}
 		var row = Math.floor(y / this.field.rowHeight);
 		var col = Math.floor(x / this.field.rowHeight);
 		for (var i = 0; i < this.turrets.length; i++) {
@@ -62,6 +60,9 @@ function Game(field, scene, DOMObjects) {
 			}
 		}
 		var turret = new Turret(row, col, this.field, this.currentTime);
+		if (this.coins <= turret.cost) {
+			return;
+		}
 		this.turretID++;
 		turret.id = this.turretID;
 		this.turrets.push(turret);
@@ -75,6 +76,8 @@ function Game(field, scene, DOMObjects) {
 		this.previousTime = this.currentTime;
 		this.currentTime = t;
 		this.elapsed += this.currentTime - this.previousTime;
+
+	
 		if (this.waveSpawned <  this.waveCount) { //middle of a wave, spawn until max
 			var n = random(1, 3);
 			if (this.elapsed >= n * 1000) {
@@ -87,7 +90,12 @@ function Game(field, scene, DOMObjects) {
 		if (this.waveSpawned == this.waveCount && this.waveAlive == 0) {//end of wave, start next 
 			this.elapsedBetweenWaves += this.currentTime - this.previousTime;
 			if (this.elapsedBetweenWaves >= 5000) { //but wait 5 seconds
-				this.waveNumber = this.waveNumber + 1;
+				if (this.initialWave >= 3) {
+					this.waveNumber = this.waveNumber + 1;
+				}
+				else {
+					this.initialWave++; //warm up wave
+				}
 				this.waveCount = Math.round(4*Math.log(this.waveNumber) + 2 * this.waveNumber);
 				this.waveSpawned = 0;
 				this.waveAlive = this.waveCount;
@@ -95,6 +103,7 @@ function Game(field, scene, DOMObjects) {
 				this.elapsedBetweenWaves = 0;
 			}
 		}
+		
 		
 		
 		for (var i = 0; i < this.bullets.length; i++) {
