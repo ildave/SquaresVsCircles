@@ -76,6 +76,7 @@ function Critter(row, field, id, t) {
 		return hitters;
 	}
 
+	/*
 	this.attackTurret = function(turrets) {
 		var deadTurrets = new Array();
 		for (var i = 0; i < turrets.length; i++) {
@@ -89,7 +90,7 @@ function Critter(row, field, id, t) {
 			}
 		}
 		return deadTurrets;
-	}
+	}*/
 
 	this.isDead = function() {
 		return this.life <= 0;
