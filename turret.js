@@ -9,6 +9,7 @@ function Turret(row, col, field, currentTime) {
     this.id = 0;
     this.life = 5000;
     this.cost = 10;
+    this.width = 40;
 
 	this.shoot = function(t, critters) {
         var shoot = false;

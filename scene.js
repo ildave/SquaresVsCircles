@@ -67,7 +67,7 @@ function Scene(ctx) {
 			ctx.save();
 			ctx.beginPath();
 			ctx.fillStyle = t.color;
-			ctx.rect(x, y, 40, 40);
+			ctx.rect(x, y, t.width, t.width);
 			ctx.fill();
 			ctx.closePath();
 			ctx.restore();

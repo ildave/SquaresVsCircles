@@ -33,7 +33,7 @@ function Critter(row, field, id, t) {
 			if (t.row != this.row) {
 				continue;
 			}
-			if ((t.col * 50 + 45) >= this.x - this.r && (t.col * 50) < this.x + this.r) {
+			if ((t.col * 50 + t.width + (50 - t.width) / 2) >= this.x - this.r && (t.col * 50) < this.x + this.r) {
 				touching = true;
 				target = t;
 				break;
@@ -83,7 +83,7 @@ function Critter(row, field, id, t) {
 			if (t.row != this.row) {
 				continue;
 			}
-			if ((t.col * 50 + 45) >= this.x - this.r) {
+			if ((t.col * 50 + t.width + (50 - t.width) / 2) >= this.x - this.r) {
 				console.log("touched a turret");
 				deadTurrets.push(t);
 			}
