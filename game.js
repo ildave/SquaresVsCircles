@@ -12,8 +12,10 @@ function Game(field, scene, DOMObjects) {
 	this.critterID = 0;
 	this.bulletID = 0;
 	this.turretID = 0;
+	this.blockerID = 0;
 	this.turrets = new Array();
 	this.bullets = new Array();
+	this.blockers = new Array();
 	this.deadCritters = 0;
 	this.deadTurrets = 0;
 	this.waveNumber = 1;
@@ -55,6 +57,7 @@ function Game(field, scene, DOMObjects) {
 		scene.drawCritters(this.critters);
 		scene.drawTurrets(this.turrets);
 		scene.drawBullets(this.bullets);
+		scene.drawBlockers(this.blockers);
 		scene.drawSelector(this.selectedItem);
 	}
 
@@ -75,6 +78,29 @@ function Game(field, scene, DOMObjects) {
 
 	this.spawnBlocker = function(x, y) {
 		console.log("spawn blocker");
+		if (this.running == 0) {
+			return;
+		}
+		var row = Math.floor(y / this.field.rowHeight);
+		var col = Math.floor(x / this.field.rowHeight);
+		for (var i = 0; i < this.turrets.length; i++) {
+			if (this.turrets[i].row == row && this.turrets[i].col == col) {
+				return;
+			}
+		}
+		for (var i = 0; i < this.blockers.length; i++) {
+			if (this.blockers[i].row == row && this.blockers[i].col == col) {
+				return;
+			}
+		}
+		var blocker = new Blocker(row, col, this.field, this.currentTime);
+		if (this.coins < blocker.cost) {
+			return;
+		}
+		this.blockerID++;
+		blocker.id = this.blockerID;
+		this.blockers.push(blocker);
+		this.coins = this.coins - blocker.cost;
 	}
 
 	this.spawnTurret = function(x, y) {
@@ -88,8 +114,13 @@ function Game(field, scene, DOMObjects) {
 				return;
 			}
 		}
+		for (var i = 0; i < this.blockers.length; i++) {
+			if (this.blockers[i].row == row && this.blockers[i].col == col) {
+				return;
+			}
+		}
 		var turret = new Turret(row, col, this.field, this.currentTime);
-		if (this.coins <= turret.cost) {
+		if (this.coins < turret.cost) {
 			return;
 		}
 		this.turretID++;

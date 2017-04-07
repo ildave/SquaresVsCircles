@@ -110,4 +110,22 @@ function Scene(ctx) {
 			ctx.restore();
 		}
 	}	
+
+	this.drawBlockers = function(blockers) {
+		for (var i = 0; i < blockers.length; i++) {
+			var b = blockers[i];
+			if (!b) {
+				continue;
+			}
+			var x = b.col * b.field.rowHeight + 15;
+			var y = b.row * b.field.rowHeight + 5;
+			ctx.save();
+			ctx.beginPath();
+			ctx.fillStyle = b.color;
+			ctx.rect(x, y, b.width, b.height);
+			ctx.fill();
+			ctx.closePath();
+			ctx.restore();
+		}	
+	}
 }
