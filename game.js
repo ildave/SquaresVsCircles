@@ -24,6 +24,7 @@ function Game(field, scene, DOMObjects) {
 	this.initialWave = 0;
 	this.elapsedBetweenWaves = 0;
 	this.coins = 25;
+	this.selectedItem = "t";
 
 	this.setup = function() {
 		console.log("Setup");
@@ -35,17 +36,45 @@ function Game(field, scene, DOMObjects) {
 		console.log("Fine setup");
 	}
 
+	this.selectItem = function(x, y) {
+		console.log(x, y);
+		if (x > 100) {
+			return;
+		}
+		if (x <= 50) {
+			this.selectedItem = "t";
+
+		}
+		else {
+			this.selectedItem = "b";
+		}
+	}
+
 	this.draw = function() {
 		scene.drawField(this.field, this.deadCritters, this.deadTurrets, this.waveNumber, this.waveOnScreen, this.coins);
 		scene.drawCritters(this.critters);
 		scene.drawTurrets(this.turrets);
 		scene.drawBullets(this.bullets);
+		scene.drawSelector(this.selectedItem);
 	}
 
 	this.spawnCritter = function(t) {
 		var critter = new Critter(random(0, 7), this.field, this.critterID, t);
 		this.critters.push(critter);
 		this.critterID++;
+	}
+
+	this.spawnObject = function(x, y) {
+		if (this.selectedItem == "t") {
+			this.spawnTurret(x, y);
+		}
+		else if (this.selectedItem == "b") {
+			this.spawnBlocker(x, y);
+		}
+	}
+
+	this.spawnBlocker = function(x, y) {
+		console.log("spawn blocker");
 	}
 
 	this.spawnTurret = function(x, y) {

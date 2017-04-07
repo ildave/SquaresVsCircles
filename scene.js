@@ -1,6 +1,43 @@
 function Scene(ctx) {
 	this.ctx = ctx;
 
+	this.drawSelector = function(selected) {
+		ctx.save();
+		ctx.beginPath();
+		ctx.fillStyle = "black";
+		ctx.rect(5, 455, 40, 40);
+		ctx.fill();
+		ctx.closePath();
+		ctx.restore();
+
+		ctx.save();
+		ctx.beginPath();
+		ctx.fillStyle = "black";
+		ctx.rect(70, 455, 20, 40);
+		ctx.fill();
+		ctx.closePath();
+		ctx.restore();
+
+		if (selected == "t") {
+			ctx.save();
+			ctx.beginPath();
+			ctx.lineWidth="3";
+			ctx.strokeStyle="red";
+			ctx.rect(5, 455, 40, 40); 
+			ctx.stroke();
+			ctx.restore();
+		}
+		else if (selected == "b") {
+			ctx.save();
+			ctx.beginPath();
+			ctx.lineWidth="3";
+			ctx.strokeStyle="red";
+			ctx.rect(70, 455, 20, 40); 
+			ctx.stroke();
+			ctx.restore();
+		}
+	}
+
 	this.drawEnd = function() {
 		ctx.font = "25px Arial";
 		var txt = "You lose!";
@@ -10,7 +47,7 @@ function Scene(ctx) {
 	}
 
 	this.drawField = function(field, deadCritters, deadTurrets, waveNumber, waveOnScreen, coins) {
-		ctx.clearRect(0, 0, field.width, field.height + 25);
+		ctx.clearRect(0, 0, field.width, field.height + 100);
 		for (var i = 0; i <= field.height; i = i + field.rowHeight) {
 			ctx.beginPath();
 			ctx.moveTo(0, i);

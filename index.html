@@ -4,7 +4,7 @@
 <style>
 #field {
     width: 800px;
-    height: 450px;
+    height: 500px;
     border: 1px solid black;
 }
 </style>
@@ -12,7 +12,7 @@
 
 <body>
 
-<canvas id="field" width="800" height="450"></canvas>
+<canvas id="field" width="800" height="500"></canvas>
 <br />
 <button id="start">Start</button> <button id="pause">Pause</button>
 
@@ -43,10 +43,16 @@ document.addEventListener("DOMContentLoaded", function() {
         var elemTop = canvas.offsetTop;
         var x = event.pageX - elemLeft;
         var y = event.pageY - elemTop;
-		if (x <= 50 || y > 400) {
+		if (y >= 450) {
+			game.selectItem(x, y);
+		}
+		else if (x <= 50 || y > 400) {
 			return;
 		}
-        game.spawnTurret(x, y);
+		else {
+			game.spawnObject(x, y);
+		}
+        
     });
 
 	game.setup();
