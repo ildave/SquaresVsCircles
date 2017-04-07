@@ -18,6 +18,7 @@ function Game(field, scene, DOMObjects) {
 	this.blockers = new Array();
 	this.deadCritters = 0;
 	this.deadTurrets = 0;
+	this.deadBlockers = 0;
 	this.waveNumber = 1;
 	this.waveCount = Math.round(4*Math.log(this.waveNumber) + 2 * this.waveNumber) + (this.waveNumber - 1);
 	this.waveSpawned = 0;
@@ -39,7 +40,6 @@ function Game(field, scene, DOMObjects) {
 	}
 
 	this.selectItem = function(x, y) {
-		console.log(x, y);
 		if (x > 100) {
 			return;
 		}
@@ -77,7 +77,6 @@ function Game(field, scene, DOMObjects) {
 	}
 
 	this.spawnBlocker = function(x, y) {
-		console.log("spawn blocker");
 		if (this.running == 0) {
 			return;
 		}
@@ -173,7 +172,7 @@ function Game(field, scene, DOMObjects) {
 			}
 		}
 		for (var i = 0; i < this.critters.length; i++) {
-			this.critters[i].update(t, this.turrets);
+			this.critters[i].update(t, this.turrets, this.blockers);
 			var hitters = this.critters[i].hit(this.bullets);
 			for (var j = 0; j < hitters.length; j++) {
 				this.removeBullet(hitters[j]);
@@ -186,6 +185,16 @@ function Game(field, scene, DOMObjects) {
 				this.removeCritter(this.critters[i]);
 			}
 
+		}
+		for (var i = 0; i < this.blockers.length; i++) {
+			if (!this.blockers[i]) {
+				continue;
+			}
+			console.log(this.blockers[i].life);
+			if (this.blockers[i].isDead()) {
+				this.deadBlockers++;
+				this.removeBlocker(this.blockers[i]);
+			}
 		}
 		for (var i = 0; i < this.turrets.length; i++) {
 			if (!this.turrets[i]) {
@@ -279,6 +288,22 @@ function Game(field, scene, DOMObjects) {
 		}
 		if (index > -1) {
 			this.turrets.splice(index, 1);
+		}
+	}
+
+	this.removeBlocker = function(blocker) {
+		if (!blocker) {
+			return;
+		}
+		var index = -1;
+		for (var i = 0; i < this.blockers.length; i++) {
+			if (this.blockers[i].id == blocker.id) {
+				index = i;
+				break;
+			}
+		}
+		if (index > -1) {
+			this.blockers.splice(index, 1);
 		}
 	}
 }

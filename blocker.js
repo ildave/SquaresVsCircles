@@ -11,4 +11,8 @@ function Blocker(row, col, field, currentTime) {
     this.cost = 25;
     this.width = 20;
     this.height = 40;
+
+     this.isDead = function() {
+        return this.life <= 0;
+    }
 }

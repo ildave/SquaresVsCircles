@@ -15,7 +15,7 @@ function Critter(row, field, id, t) {
 	this.elapsed = 0;
 	this.attacking = false;
 
-	this.update = function(t, turrets) {
+	this.update = function(t, turrets, blockers) {
 		this.x = this.x - this.speed;
 		this.previousTime = this.currentTime;
 		this.currentTime = t;
@@ -23,7 +23,7 @@ function Critter(row, field, id, t) {
 		var touching = false;
 		var target;
 		
-		if (turrets.length == 0) {
+		if (turrets.length == 0 && blockers.length == 0) {
 			this.attacking = false;
 			this.speed = this.previousSpeed;
 		}
@@ -39,6 +39,19 @@ function Critter(row, field, id, t) {
 				break;
 			}
 		}
+
+		for (var i = 0; i < blockers.length; i++) {
+			var b = blockers[i];
+			if (b.row != this.row) {
+				continue;
+			}
+			if ((b.col * 50 + b.width + (50 - b.width) / 2) >= this.x - this.r && (b.col * 50) < this.x + this.r) {
+				touching = true;
+				target = b;
+				break;
+			}
+		}
+
 		if (touching) {
 			this.elapsed = this.currentTime - this.previousTime;
 			if (!this.attacking) {
